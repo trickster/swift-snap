@@ -1,42 +1,48 @@
 name: swift
-base: core20
-version: '5.3.3'
+base: core24
+version: '6.2.1'
 summary: Snap package for the Swift programming language
 description: |
   Swift makes it easy to write software that is incredibly fast and safe by design.
   Our goals for Swift are ambitious: we want to make programming simple things easy, and difficult things possible.
 grade: devel
 confinement: classic
-architectures: [amd64]
 
 parts:
   swift-part:
     plugin: dump
-    source: https://swift.org/builds/swift-5.3.3-release/ubuntu2004/swift-5.3.3-RELEASE/swift-5.3.3-RELEASE-ubuntu20.04.tar.gz
+    source: https://swift.org/builds/swift-6.2.1-release/ubuntu2404/swift-6.2.1-RELEASE/swift-6.2.1-RELEASE-ubuntu24.04.tar.gz
     build-packages:
         - curl
         - dirmngr
         - gpg
+        - wget
     stage-packages:
         - libcurl4
-        - libxml2
+        - libcurl4-openssl-dev
         - libedit2
         - libsqlite3-0
         - libc6-dev
         - binutils
-        - libgcc-9-dev
-        - libstdc++-9-dev
+        - libgcc-13-dev
+        - libncurses-dev
+        - libpython3-dev
+        - libxml2-dev
+        - libz3-dev
+        - libstdc++-13-dev
         - libz3-dev
         - zlib1g-dev
-        - libpython2.7
         - tzdata
         - git
         - pkg-config
+        - zip
+        - unzip
+        - zlib1g-dev
     override-pull: |
         export DEBIAN_FRONTEND=noninteractive
         export GNUPGHOME="$(mktemp -d)"
-        curl --progress-bar -fSL "https://swift.org/builds/swift-5.3.3-release/ubuntu2004/swift-5.3.3-RELEASE/swift-5.3.3-RELEASE-ubuntu20.04.tar.gz" -o swift.tar.gz "https://swift.org/builds/swift-5.3.3-release/ubuntu2004/swift-5.3.3-RELEASE/swift-5.3.3-RELEASE-ubuntu20.04.tar.gz.sig" -o swift.tar.gz.sig
-        gpg --batch --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-keys "A62AE125BBBFBB96A6E042EC925CC1CCED3D1561"
+        curl --progress-bar -fSL "https://swift.org/builds/swift-6.2.1-release/ubuntu2404/swift-6.2.1-RELEASE/swift-6.2.1-RELEASE-ubuntu24.04.tar.gz" -o swift.tar.gz "https://swift.org/builds/swift-6.2.1-release/ubuntu2404/swift-6.2.1-RELEASE/swift-6.2.1-RELEASE-ubuntu24.04.tar.gz.sig" -o swift.tar.gz.sig
+        wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import -
         gpg --batch --verify swift.tar.gz.sig swift.tar.gz
         tar -xzf swift.tar.gz --strip-components=2
         rm swift.tar.gz.sig
