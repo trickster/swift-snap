@@ -35,8 +35,6 @@ parts:
         - tzdata
         - git
         - pkg-config
-        - zip
-        - unzip
         - zlib1g-dev
     override-pull: |
         export DEBIAN_FRONTEND=noninteractive
